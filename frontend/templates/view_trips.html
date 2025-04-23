@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Просмотр моих поездок{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Мои поездки</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Откуда</th>
+                <th scope="col">Куда</th>
+                <th scope="col">Расстояние (км)</th>
+                <th scope="col">Стоимость ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trip in trips %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ trip.departure_point }}</td>
+                <td>{{ trip.arrival_point }}</td>
+                <td>{{ trip.distance }}</td>
+                <td>{{ trip.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/create_trip" class="btn btn-success">Создать новую поездку</a>
+</div>
+{% endblock %}
