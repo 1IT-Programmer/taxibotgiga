@@ -1,18 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Авторизация</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-    <h1>Транспортный сервис</h1>
+{% extends "base.html" %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Авторизуйтесь</h1>
     <form method="POST" action="/login">
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br>
-        <label for="password">Пароль:</label><br>
-        <input type="password" id="password" name="password"><br>
-        <button type="submit">Войти</button>
+        <div class="form-group">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Вход</button>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}
