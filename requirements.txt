@@ -1,0 +1,5 @@
+python-telegram-bot==20.7
+SQLAlchemy==2.0.21
+aiosqlite==0.21.0
+uvicorn==0.23.2
+fastapi==0.103.2
