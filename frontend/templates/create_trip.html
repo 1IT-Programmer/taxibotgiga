@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Новая поездка{% endblock %}
+
+{% block content %}
+<h1>Запланировать поездку</h1>
+<form method="post" action="/create_trip">
+    <div class="mb-3">
+        <label for="fromPlace" class="form-label">Откуда:</label>
+        <input type="text" class="form-control" id="fromPlace" name="fromPlace" required>
+    </div>
+    <div class="mb-3">
+        <label for="toPlace" class="form-label">Куда:</label>
+        <input type="text" class="form-control" id="toPlace" name="toPlace" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Отправить заявку</button>
+</form>
+{% endblock %}
