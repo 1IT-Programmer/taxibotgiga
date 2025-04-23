@@ -1,18 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}Новая поездка{% endblock %}
+{% block title %}Создание поездки{% endblock %}
 
 {% block content %}
-<h1>Запланировать поездку</h1>
-<form method="post" action="/create_trip">
-    <div class="mb-3">
-        <label for="fromPlace" class="form-label">Откуда:</label>
-        <input type="text" class="form-control" id="fromPlace" name="fromPlace" required>
-    </div>
-    <div class="mb-3">
-        <label for="toPlace" class="form-label">Куда:</label>
-        <input type="text" class="form-control" id="toPlace" name="toPlace" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Отправить заявку</button>
-</form>
+<div class="jumbotron">
+    <h1 class="display-4">Создаем поездку</h1>
+    <form method="POST" action="/create_trip">
+        <div class="form-group">
+            <label for="departurePoint">Место отправления:</label>
+            <input type="text" class="form-control" id="departurePoint" name="departurePoint" placeholder="Город или адрес" required />
+        </div>
+        <div class="form-group">
+            <label for="arrivalPoint">Место прибытия:</label>
+            <input type="text" class="form-control" id="arrivalPoint" name="arrivalPoint" placeholder="Город или адрес" required />
+        </div>
+        <div class="form-group">
+            <label for="distance">Расстояние (км):</label>
+            <input type="number" step="any" min="0" class="form-control" id="distance" name="distance" placeholder="Например, 120 км" required />
+        </div>
+        <div class="form-group">
+            <label for="price">Стоимость ($):</label>
+            <input type="number" step="any" min="0" class="form-control" id="price" name="price" placeholder="Цена за поездку" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Создать поездку</button>
+    </form>
+</div>
 {% endblock %}
