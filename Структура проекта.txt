@@ -1,8 +1,20 @@
 transport_bot/
-├── .gitignore          # Файл игнорирования ненужных файлов
-├── Dockerfile          # Инструкция сборки контейнера Docker (опционально)
-├── docker-compose.yml  # Конфигурационный файл для запуска окружения Docker (опционально)
-├── bot.py              # Основной файл приложения (логика Telegram-бота)
-├── db.py               # Модуль управления базой данных SQLite
-├── requirements.txt    # Список зависимостей
-└── README.md           # Подробная инструкция по установке и запуску
+├── frontend/       # Фронтэнд на HTML+CSS+JS
+│   ├── static/     
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   └── templates/  # Шаблоны страниц
+│       ├── login.html
+│       ├── dashboard.html
+│       └── create_trip.html
+├── backend/        # Бекэнд на FastAPI
+│   ├── api.py      
+│   └── models.py
+├── bot.py          # Логика Telegram-бота
+├── db.py           # Работа с базой данных
+├── .env            # Переменные окружения
+├── Dockerfile      # Сборка Docker-образа (опционально)
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
