@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Панель управления{% endblock %}
+{% block title %}Моя панель{% endblock %}
 
 {% block content %}
-<h1>Ваш профиль</h1>
-<p>Привет, {{ current_user.name }}!</p>
-<a href="/view_trips" class="btn btn-primary">Посмотреть мои поездки</a>
-<a href="/create_trip" class="btn btn-success">Создать новую поездку</a>
+<div class="jumbotron">
+    <h1 class="display-4">Привет, {{ current_user.name }}!</h1>
+    <p>Здесь вы можете управлять своими поездками и профилем.</p>
+    <a href="/create_trip" class="btn btn-success">Создать поездку</a>
+    <a href="/edit_profile" class="btn btn-info">Редактировать профиль</a>
+</div>
 {% endblock %}
