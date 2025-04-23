@@ -1,8 +1,3 @@
-
-#### 6. `bot.py`
-Основной скрипт нашего бота, содержащий всю бизнес-логику и обработку запросов.
-
-```python
 import os
 import logging
 from dotenv import load_dotenv
@@ -39,19 +34,36 @@ class Trip(Base):
 Base.metadata.create_all(bind=engine)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! Я транспортный бот. Используй команды для регистрации и отправки заявок.")
+    keyboard = [
+        [InlineKeyboardButton("🚗 Зарегистрироваться 🧑‍💼", callback_data="register")],
+        [InlineKeyboardButton("🏞️ Создать поездку 🌍", callback_data="create_trip")],
+        [InlineKeyboardButton("✈️ Найти водителя ⚙️", callback_data="find_driver")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("Добро пожаловать в Транспортный бот!\n\nВыберите нужное действие:", reply_markup=reply_markup)
+
+async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    action = query.data
+    if action == "register":
+        await query.edit_message_text(text="Используйте команду /register для регистрации.")
+    elif action == "create_trip":
+        await query.edit_message_text(text="Используйте команду /create_trip для создания поездки.")
+    elif action == "find_driver":
+        await query.edit_message_text(text="Используйте команду /assign_driver для назначения водителя.")
 
 async def register(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
     if len(args) != 2 or args[0] not in ['admin', 'driver', 'passenger']:
-        await update.message.reply_text("Использование: /register <роль> <имя>. Роли: admin, driver, passenger.")
+        await update.message.reply_text("Использование: /register <роль> <имя>\nРоли: admin, driver, passenger.")
         return
     role, name = args
     with SessionLocal() as session:
         new_user = User(id=update.effective_user.id, role=role, name=name)
         session.add(new_user)
         session.commit()
-        await update.message.reply_text(f"Успешно зарегистрирован как {role}: {name}.")
+        await update.message.reply_text(f"🎉 Успешно зарегистрирован как {role}: {name}.")
 
 async def create_trip(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
@@ -63,7 +75,7 @@ async def create_trip(update: Update, context: ContextTypes.DEFAULT_TYPE):
         new_trip = Trip(passenger_id=update.effective_user.id, from_place=from_place, to_place=to_place)
         session.add(new_trip)
         session.commit()
-        await update.message.reply_text(f"Твоя поездка создана. ID: {new_trip.id}, Маршрут: {from_place} → {to_place}")
+        await update.message.reply_text(f"📌 Ваша поездка создана.\nID: {new_trip.id}\nМаршрут: {from_place} → {to_place}")
 
 async def assign_driver(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
@@ -74,12 +86,12 @@ async def assign_driver(update: Update, context: ContextTypes.DEFAULT_TYPE):
     with SessionLocal() as session:
         trip = session.query(Trip).filter_by(id=trip_id).first()
         if not trip:
-            await update.message.reply_text("Поездка не найдена.")
+            await update.message.reply_text("❗ Поездка не найдена.")
             return
         trip.driver_id = driver_id
         trip.status = "assigned"
         session.commit()
-        await update.message.reply_text(f"Назначил водителя {driver_id} на поездку {trip_id}.")
+        await update.message.reply_text(f"👏 Назначил водителя {driver_id} на поездку {trip_id}.")
 
 async def complete_trip(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
@@ -90,16 +102,17 @@ async def complete_trip(update: Update, context: ContextTypes.DEFAULT_TYPE):
     with SessionLocal() as session:
         trip = session.query(Trip).filter_by(id=trip_id).first()
         if not trip:
-            await update.message.reply_text("Поездка не найдена.")
+            await update.message.reply_text("⛳️ Поездка не найдена.")
             return
         trip.status = "completed"
         session.commit()
-        await update.message.reply_text(f"Поездка {trip_id} завершена.")
+        await update.message.reply_text(f"🔥 Поездка {trip_id} завершена.")
 
 def main():
     app = ApplicationBuilder().token(os.getenv("TELEGRAM_BOT_TOKEN")).build()
 
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(button))  # Добавили handler для обработки нажатия кнопок
     app.add_handler(CommandHandler("register", register))
     app.add_handler(CommandHandler("create_trip", create_trip))
     app.add_handler(CommandHandler("assign_driver", assign_driver))
