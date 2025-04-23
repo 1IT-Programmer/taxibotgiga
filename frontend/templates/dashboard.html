@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Панель управления{% endblock %}
+
+{% block content %}
+<h1>Ваш профиль</h1>
+<p>Привет, {{ current_user.name }}!</p>
+<a href="/view_trips" class="btn btn-primary">Посмотреть мои поездки</a>
+<a href="/create_trip" class="btn btn-success">Создать новую поездку</a>
+{% endblock %}
